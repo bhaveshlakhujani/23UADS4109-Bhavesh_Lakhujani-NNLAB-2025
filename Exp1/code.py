@@ -26,26 +26,26 @@ class Perceptron:
         accuracy = correct / len(y)
         return accuracy
 
-# NAND Truth Table
+
 X_NAND = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 y_NAND = np.array([1, 1, 1, 0])
 
-# XOR Truth Table
+
 X_XOR = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
 y_XOR = np.array([0, 1, 1, 0])
 
-# Train and Evaluate Perceptron for NAND
+
 perceptron_nand = Perceptron(input_size=2)
 perceptron_nand.train(X_NAND, y_NAND)
 accuracy_nand = perceptron_nand.evaluate(X_NAND, y_NAND)
 print(f"NAND Perceptron Accuracy: {accuracy_nand * 100:.2f}%")
 
-# Train and Evaluate Perceptron for XOR
+
 perceptron_xor = Perceptron(input_size=2)
 perceptron_xor.train(X_XOR, y_XOR)
 accuracy_xor = perceptron_xor.evaluate(X_XOR, y_XOR)
 print(f"XOR Perceptron Accuracy: {accuracy_xor * 100:.2f}%")
 
-# Display weights
+
 print("NAND Perceptron Weights:", perceptron_nand.weights)
 print("XOR Perceptron Weights:", perceptron_xor.weights)
