@@ -1,0 +1,4 @@
+NAND Perceptron Accuracy: 100.00%
+XOR Perceptron Accuracy: 50.00%
+NAND Perceptron Weights: [ 0.2 -0.2 -0.1]
+XOR Perceptron Weights: [ 0.  -0.1  0. ]
