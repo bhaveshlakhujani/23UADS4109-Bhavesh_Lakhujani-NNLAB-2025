@@ -1,2 +1,7 @@
-# 23UADS4109-Bhavesh_Lakhujani-NNLAB-2025
-Neural Network Lab Record
+# Neural Network Lab Record
+
+B.E VI Semester (AI & DS)
+
+Name: Bhavesh Lakhujani 
+
+Roll No: 23UADS4109
