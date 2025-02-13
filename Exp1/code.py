@@ -49,3 +49,17 @@ print(f"XOR Perceptron Accuracy: {accuracy_xor * 100:.2f}%")
 
 print("NAND Perceptron Weights:", perceptron_nand.weights)
 print("XOR Perceptron Weights:", perceptron_xor.weights)
+
+'''
+Explanation:
+NAND Gate:
+Linearly Separable: The perceptron can correctly classify inputs for a NAND gate because the problem is linearly separable. In simple terms, you can draw a straight line to separate the input values into their correct categories.
+
+XOR Gate:
+Non-Linearly Separable: The perceptron fails to classify an XOR gate correctly because the XOR function is not linearly separable. This means you can't draw a straight line to separate the input values into their correct categories.
+
+Limitations:
+Linearly Separable Problems: The perceptron algorithm works well for problems like NAND gates, which are linearly separable.
+
+Non-Linearly Separable Problems: For problems like XOR gates, which are not linearly separable, a single perceptron is not enough. You need more complex networks, such as multi-layer neural networks (often referred to as multi-layer perceptrons or MLPs), to solve these non-linear problems.
+'''
