@@ -1,77 +1,60 @@
+# Objective: WAP to implement a multi-layer perceptron (MLP) network with one hidden layer using numpy in Python. 
+# Demonstrate that it can learn the XOR Boolean function.
+
 import numpy as np
 
-def sigmoid(x):
-    return 1 / (1 + np.exp(-x))
+def step_function(x):
+    return 1 if x >= 0 else 0
 
-def sigmoid_derivative(x):
-    return x * (1 - x)
+def forward_pass(X, W1, B1, W2, B2):
+    
+    hidden_input = np.dot(X, W1) + B1
+    hidden_output = np.array([step_function(x) for x in hidden_input])
+    final_input = np.dot(hidden_output, W2) + B2
+    final_output = step_function(final_input)
 
-class MLP_XOR:
-    def __init__(self, input_size, hidden_size, output_size, lr=0.1, epochs=10000):
-        
-        self.lr = lr
-        self.epochs = epochs
-        self.hidden_weights = np.random.uniform(-1, 1, (input_size, hidden_size))
-        self.hidden_bias = np.random.uniform(-1, 1, (1, hidden_size))
-        self.output_weights = np.random.uniform(-1, 1, (hidden_size, output_size))
-        self.output_bias = np.random.uniform(-1, 1, (1, output_size))
+    return final_output
+    
+X_XOR = np.array([
+    [0, 0],
+    [0, 1],
+    [1, 0],
+    [1, 1]
+])
 
-    def train(self, X, y):
-        for epoch in range(self.epochs):
-            # Forward Pass
-            hidden_input = np.dot(X, self.hidden_weights) + self.hidden_bias
-            hidden_output = sigmoid(hidden_input)
-            final_input = np.dot(hidden_output, self.output_weights) + self.output_bias
-            final_output = sigmoid(final_input)
+y_XOR = np.array([0, 1, 1, 0]) 
 
-            
-            error = y - final_output
+W1 = np.array([
+    [1,  1, -1, -1],  
+    [1, -1,  1, -1]   
+])
 
-            # Backpropagation
-            output_delta = error * sigmoid_derivative(final_output)
-            hidden_delta = output_delta.dot(self.output_weights.T) * sigmoid_derivative(hidden_output)
+B1 = np.array([-0.5, -0.5, -0.5, -0.5])  
 
-            # Update Weights and Biases
-            self.output_weights += hidden_output.T.dot(output_delta) * self.lr
-            self.output_bias += np.sum(output_delta, axis=0, keepdims=True) * self.lr
-            self.hidden_weights += X.T.dot(hidden_delta) * self.lr
-            self.hidden_bias += np.sum(hidden_delta, axis=0, keepdims=True) * self.lr
-
-    def predict(self, X):
-        hidden_input = np.dot(X, self.hidden_weights) + self.hidden_bias
-        hidden_output = sigmoid(hidden_input)
-        final_input = np.dot(hidden_output, self.output_weights) + self.output_bias
-        final_output = sigmoid(final_input)
-        return np.round(final_output)
-
-    def evaluate(self, X, y):
-        predictions = self.predict(X)
-        accuracy = np.mean(predictions == y)
-        return accuracy
+W2 = np.array([1, 1, 1, 1])  
+B2 = -2  #
 
 
-X_XOR = np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
-y_XOR = np.array([[0], [1], [1], [0]])
+predictions = [forward_pass(x, W1, B1, W2, B2) for x in X_XOR]
 
 
-mlp_xor = MLP_XOR(input_size=2, hidden_size=2, output_size=1)
-mlp_xor.train(X_XOR, y_XOR)
-accuracy_xor = mlp_xor.evaluate(X_XOR, y_XOR)
-print(f"XOR MLP Accuracy: {accuracy_xor * 100:.2f}%")
+correct_predictions = sum(p == y for p, y in zip(predictions, y_XOR))
+accuracy = (correct_predictions / len(y_XOR)) * 100
 
+print("\nMLP Output for XOR Function (With Manual Weight Updates):")
+for i, (x, y) in enumerate(zip(X_XOR, predictions)):
+    print(f"Input: {x} → Predicted Output: {y}, Actual Output: {y_XOR[i]}")
 
-print("Predictions:")
-for x, y in zip(X_XOR, mlp_xor.predict(X_XOR)):
-    print(f"Input: {x} -> Predicted: {y[0]}")
-
-
+print(f"\nModel Accuracy: {accuracy:.2f}%")
 
 '''
-Explanation:
-The network was trained for 10,000 epochs using the XOR dataset.
-The loss gradually decreased as the network learned the XOR function.
-The output predictions after training are close to [0, 1, 1, 0], which is the expected output for the XOR truth table.
-Tuning Parameters:
-You can experiment with the hidden_size (number of neurons in the hidden layer) and learning_rate to improve performance and convergence speed.
-The epochs value controls how many times the entire dataset is passed through the network during training. If necessary, you can adjust this number to reach a lower loss.
+My Comments
+Limitations:
+1) In this program, we are choosing the weights and biases manually, that's why it is specific to a particular problem. If we change the values 
+of input features (like from XOR to NOR), it will not work good.
+
+Scope of Improvment:
+1) for updating the weights and bias automatically we can use gradient descent in which we define a formula to update the weights and bias instead of
+mannually choosing it.
+2) For learning and training the neural network we can use ReLU function, tanh, sigmoid function instead of step function.
 '''
